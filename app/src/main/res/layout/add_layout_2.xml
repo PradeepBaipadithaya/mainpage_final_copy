@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:orientation="vertical"
+    android:background="@drawable/admin_ui2"
+    android:padding="10dp"
+    android:layout_height="300dp">
+
+    <TextView
+        android:id="@+id/updatetext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:gravity="center"
+
+        android:text="ADD BUS DETAILS"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"></TextView>
+
+    <EditText
+        android:id="@+id/ipemail"
+        android:layout_width="366dp"
+        android:layout_height="50dp"
+        android:background="@drawable/card_view"
+        android:fontFamily="monospace"
+        android:hint="Bus No...."
+
+        android:padding="3dp"
+        android:singleLine="true"
+        android:textColorHint="@color/custom_color_yellow">
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/ipname"
+        android:layout_width="364dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/card_view"
+        android:fontFamily="monospace"
+        android:hint="Conducor Name..."
+
+        android:padding="3dp"
+        android:singleLine="true"
+        android:textColorHint="@color/custom_color_yellow">
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/ippass"
+        android:layout_width="361dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/card_view"
+        android:fontFamily="monospace"
+        android:hint="Phno..."
+
+        android:padding="3dp"
+        android:singleLine="true"
+        android:textColorHint="@color/custom_color_yellow">
+
+    </EditText>
+
+    <Button
+        android:id="@+id/Done"
+        android:layout_width="324dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+
+        android:fontFamily="monospace"
+        android:text="ADD"
+        android:textColor="@color/white"></Button>
+</LinearLayout>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/admin_ui2"
+
+    tools:context=".AdminRegister">
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="400dp"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="160dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/admine"
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/mybutton1"
+            android:drawableStart="@drawable/ic_mail"
+            android:hint="Enter Email Id"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/customtextcolor"
+            android:textColorHighlight="@color/black"
+            android:textColorHint="@color/custom_color_yellow"
+            android:textSize="16dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="400dp"
+        android:layout_height="60dp"
+        app:passwordToggleEnabled="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="260dp"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/adminpass"
+            android:layout_width="400dp"
+            android:layout_height="60dp"
+            android:background="@drawable/mybutton1"
+            android:drawableStart="@drawable/ic_lock"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+
+            android:singleLine="true"
+            android:textColor="@color/customtextcolor"
+            android:textColorHint="@color/custom_color_yellow"
+            android:textSize="16dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/tripbtn"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="375dp"
+        android:background="@drawable/shadow3"
+        android:fontFamily="sans-serif-black"
+        android:text="Register"
+        android:textColor="#FF0000"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="218dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="96dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="ADMIN REGISTER"
+        android:textColor="@color/black"
+
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="37dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="192dp"
+        android:layout_marginTop="484dp"
+        android:layout_marginEnd="182dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="OR"
+        android:textColor="#FFCD4D"
+
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/pass10"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="7dp"
+
+        android:layout_marginTop="589dp"
+        android:background="@drawable/shadow3"
+        android:fontFamily="sans-serif-black"
+        android:text="Login if Already An admin"
+        android:textColor="#FF0000"
+        android:textSize="20dp" />
+
+
+</RelativeLayout>

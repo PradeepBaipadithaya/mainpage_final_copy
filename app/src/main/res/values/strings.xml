@@ -1,0 +1,20 @@
+<resources>
+    <!--    <string name="app_name">Mainpage</string>-->
+    <string name="app_name">AWATAR-Tracking System</string>
+
+    <string name="service_already_running">Service is already running</string>
+    <string name="service_start_successfully">Service started successfully</string>
+    <string name="gps_enable">GPS enable</string>
+    <string name="please_turn_on_gps">Please turn on GPS</string>
+    <string name="ok">Ok</string>
+
+    <string name="background_location_permission_message">
+         -Allow only while using the app- permission has been granted. If you want
+        to get location updates in the background even when not using the app then grant
+        -Allow all the time- permission
+    </string>
+    <string name="title_activity_passenger_locate">passenger_locate</string>
+    <string name="Cancel">Cancel</string>
+    <string name="gps_network_not_enabled">Location is required</string>
+    <string name="open_location_settings">Turn On</string>
+</resources>
