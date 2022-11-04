@@ -43,6 +43,7 @@ public class conductor_login extends AppCompatActivity {
                                     Toast.makeText(conductor_login.this, "Loged in", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(conductor_login.this, conductor_location.class);
                                     intent.putExtra("conductor_email", emailid);
+//                                    Toast.makeText(conductor_login.this, ""+emailid, Toast.LENGTH_SHORT).show();
                                     startActivity(intent);
                                 }
                                 else{

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,10 +16,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,11 +33,11 @@ import com.google.firebase.database.ValueEventListener;
 public class AdminControl extends AppCompatActivity {
     RecyclerView recyclerView;
     static ArrayList<ContactModel> arrcont= new ArrayList<>();
-
-
+    Context context;
     FloatingActionButton mAddAlarmFab, mAddPersonFab,mupdate;
+    DatabaseReference reff=FirebaseDatabase.getInstance().getReferenceFromUrl("https://mainpage-1398d-default-rtdb.firebaseio.com/").child("conductors");
 
-
+    firebase fb =new firebase("conductors");
     ExtendedFloatingActionButton mAddFab;
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://mainpage-1398d-default-rtdb.firebaseio.com/");
 
@@ -40,12 +45,12 @@ public class AdminControl extends AppCompatActivity {
 
     Boolean isAllFabsVisible;
 
+//    String try = getIntent().getStringExtra("pos");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_control);
-
 
         //Floating Button------------------------------------------------------------------------------------------------>
 
@@ -119,7 +124,7 @@ public class AdminControl extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(AdminControl.this, "Click on What You Want To Delete", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminControl.this, "Click on What You Want To update", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -127,8 +132,12 @@ public class AdminControl extends AppCompatActivity {
         //Recylcer View ------------------------------------------------------------------------------------->
 
 
-        recyclerView = findViewById(R.id.recyler1);
-        recyclerView.setLayoutManager( new LinearLayoutManager( this));
+//        recyclerView = findViewById(R.id.recyler1);
+//        recyclerView.setLayoutManager( new LinearLayoutManager( this));
+
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyler1);
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         RecyclerContactAdapter adapter = new RecyclerContactAdapter(this,arrcont);
         recyclerView.setAdapter(adapter);
         DatabaseReference myReff = FirebaseDatabase.getInstance().getReference().child("conductors");
@@ -137,15 +146,14 @@ public class AdminControl extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot data:snapshot.getChildren()) {
                     String abc=data.getKey();
-                    Log.d("TAG",abc);
                     String detail[] = new String[3];
                     int i=0;
                     for (DataSnapshot data2:snapshot.child(abc).getChildren()) {
                         String abcd = data2.getValue().toString();
                         detail[i++]=abcd;
                         if(i==3){
-                            arrcont.add(new ContactModel(detail[0],detail[1],detail[2]));
-                            i=0;
+                            arrcont.add(new ContactModel(detail[0], detail[1], detail[2]));
+                            i = 0;
                         }
 //                        String name= data2.getChildren().getClass().getName().toString();
 //                        String email=data2.getValue().toString();
@@ -159,10 +167,11 @@ public class AdminControl extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
 
         });
+
+
         mAddPersonFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -184,33 +193,24 @@ public class AdminControl extends AppCompatActivity {
                         String name1=name.getText().toString();
                         String pass1=pass.getText().toString();
                         if(name1.isEmpty() || email1.isEmpty() || pass1.isEmpty()){
-                            Toast.makeText(AdminControl.this, "Please Fill The Box To Add", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AdminControl.this, "Please Fill all the box to Add", Toast.LENGTH_SHORT).show();
                         }
                         else{
                             myRef.child("conductors").addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if(snapshot.hasChild(email1)){
-                                        Toast.makeText(AdminControl.this, "Conductor's 'NUMBER' has already registered ", Toast.LENGTH_SHORT).show();
+                                    if(snapshot.hasChild(pass1)){
+                                        Toast.makeText(AdminControl.this, "Conductor's number has already registered ", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
-                                        //Updating database
-                                        try{
-                                            myRef.child("conductors").child(email1).child("phno").setValue(email1);
-                                            myRef.child("conductors").child(email1).child("name").setValue(name1);
-                                            myRef.child("conductors").child(email1).child("password").setValue(pass1);
+                                        database_handler tcd = new database_handler(email1,name1,pass1);
+                                        fb.add(tcd,pass1).addOnSuccessListener(suc->
+                                        {
+                                            Toast.makeText(AdminControl.this, "Record Inserted", Toast.LENGTH_SHORT).show();
                                             finish();
-                                            ArrayList<ContactModel> arrcont= new ArrayList<>();
-                                            //arrcont.add(new ContactModel(name1,email1,pass1));
-                                            Toast.makeText(AdminControl.this, "Addded Sucessfully", Toast.LENGTH_SHORT).show();
-                                            dialog.cancel();
-                                        }
-                                        catch (Exception e){
-                                            Toast.makeText(AdminControl.this, "Addded Sucessful", Toast.LENGTH_SHORT).show();
-                                            finish();
-                                        }
-
-
+                                        }).addOnFailureListener(er->{
+                                            Toast.makeText(AdminControl.this, ""+er.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
                                     }
                                 }
 

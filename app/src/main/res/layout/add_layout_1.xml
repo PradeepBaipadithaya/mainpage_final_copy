@@ -1,52 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="400dp"
-    android:orientation="vertical"
+    android:layout_height="350dp"
     android:background="@drawable/admin_ui2"
-    android:padding="10dp"
-    android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/updatetext"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:fontFamily="monospace"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
+        android:gravity="center"
         android:text="ADD TRIPCOLLECTOR"
-        ></TextView>
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"></TextView>
 
     <EditText
         android:id="@+id/ipemail"
+        android:singleLine="true"
         android:layout_width="366dp"
         android:layout_height="50dp"
         android:background="@drawable/card_view"
         android:fontFamily="monospace"
-        android:hint="ph no number....."
+        android:hint="name......"
         android:padding="3dp"
-        android:textColor="@color/custom_color_yellow">
+        android:textColor="@color/customtextcolor"
+        android:textColorHint="@color/custom_color_yellow">
 
     </EditText>
 
     <EditText
         android:id="@+id/ipname"
+        android:singleLine="true"
         android:layout_width="364dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/card_view"
-        android:fontFamily="monospace"
-        android:hint="name......"
-
-        android:padding="3dp"
-        android:textColor="@color/custom_color_yellow">
-
-    </EditText>
-
-    <EditText
-        android:id="@+id/ippass"
-        android:layout_width="361dp"
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/card_view"
@@ -54,7 +42,25 @@
         android:hint="password.."
 
         android:padding="3dp"
-        android:textColor="@color/custom_color_yellow">
+        android:textColor="@color/customtextcolor"
+        android:textColorHint="@color/custom_color_yellow">
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/ippass"
+        android:singleLine="true"
+        android:layout_width="361dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/card_view"
+        android:fontFamily="monospace"
+        android:hint="ph no number....."
+
+        android:padding="3dp"
+        android:inputType="number"
+        android:textColor="@color/customtextcolor"
+        android:textColorHint="@color/custom_color_yellow">
 
     </EditText>
 

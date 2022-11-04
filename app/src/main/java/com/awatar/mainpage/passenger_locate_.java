@@ -3,6 +3,7 @@ package com.awatar.mainpage;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +44,7 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
     private ActivityPassengerLocate2Binding binding;
     public DatabaseReference reference_bus;
     public DatabaseReference reference_user;
-    String userID;
+
     Marker myMarker;
     Marker myMarker_user;
     public double locationLat=12.132;
@@ -59,8 +60,6 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
     ArrayList dist_set = new ArrayList();
     ArrayList time = new ArrayList();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +73,11 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
         mapFragment.getMapAsync(this);
 
         String conductor_bus_num = getIntent().getStringExtra("conductor_bus_num");
-
+//        user_lat = getIntent().getStringExtra("user_lat");
+//        user_long = getIntent().getStringExtra("user_long");
+//
+//        Toast.makeText(passenger_locate_.this, ""+user_lat, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(passenger_locate_.this, ""+user_long, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(this, ""+locationLat, Toast.LENGTH_SHORT).show();
 //        Toast.makeText(this, ""+locationLong, Toast.LENGTH_SHORT).show();
 
@@ -105,7 +108,6 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
 //                            Toast.makeText(passenger_locate.this, ""+locationLat, Toast.LENGTH_SHORT).show();
                             i=0;
                         }
-
                     }
                 }
                 @Override
@@ -120,7 +122,7 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
         }
     }
 
-    private void read_bus_location() {
+    public void read_bus_location() {
         try {
             final boolean[] flag = {true};
 
@@ -141,18 +143,14 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
                             locationLat = Double.parseDouble(values[0]);
                             locationLong = Double.parseDouble(values[1]);
                             myMarker.setPosition(new LatLng(locationLat, locationLong));
-
                             rout();
-
 //                            Toast.makeText(passenger_locate.this, ""+locationLat, Toast.LENGTH_SHORT).show();
                             i=0;
                         }
-
                     }
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
                     Toast.makeText(passenger_locate_.this, "Fail to get data.", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -171,6 +169,7 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -179,6 +178,7 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.bus_top));
         markerOptions.anchor((float) 0.5,(float) 0.5);
         LatLng currentLocation = new LatLng(locationLat, locationLong);
+        LatLng currentLocation_user = new LatLng(locationLat_user, locationLat_user);
         myMarker = mMap.addMarker(markerOptions.position(currentLocation).title("Bus Location"));
         myMarker_user = mMap.addMarker(new MarkerOptions().position(currentLocation).title("Your Location"));
         googleMap.setOnMarkerClickListener(this);
@@ -186,16 +186,12 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(7);
         mMap.moveCamera(center);
         mMap.animateCamera(zoom);
-
 //        read_location();
     }
 
-
-
-
     private void rout() {
         List<LatLng> path = new ArrayList();
-
+try {
         //Execute Directions API request
         GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyAGNT9WwAdNDz1o8P3Xrb0arxptCDVp1gM")
@@ -207,7 +203,6 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
 //        Toast.makeText(this, ""+locationLat_user, Toast.LENGTH_LONG).show();
         DirectionsApiRequest req = DirectionsApi.getDirections(context, ""+user_loc, ""+bus_loc);
 //        DirectionsApiRequest req = DirectionsApi.getDirections(context, "12.32421,75.23423", "13.231231,76.23421");
-        try {
             DirectionsResult res = req.await();
             //Loop through legs and steps to get encoded polylines of each step
             if (res.routes != null && res.routes.length > 0) {
@@ -218,17 +213,15 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
                         num = route.legs.length;
                         DirectionsLeg leg = route.legs[i];
                         try {
-
                             String s = leg.distance.humanReadable;
                             String time_val = leg.duration.humanReadable;
 //                            String dist;
                             String[] dist =s.split(" ");
 //                            Toast.makeText(this, ""+time_val, Toast.LENGTH_SHORT).show();
-                            dist_set.add(Double.parseDouble(dist[0]));
-                            time.add(time_val);
-
+                            dist_set.add(i,Double.parseDouble(dist[0]));
+                            time.add(i,time_val);
                         }catch (Exception e){
-//                            Toast.makeText(this, ""+e, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, ""+e, Toast.LENGTH_SHORT).show();
                         }
                         if (leg.steps != null) {
 //                            Toast.makeText(this, ""+leg.steps.length, Toast.LENGTH_LONG).show();
@@ -245,7 +238,6 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
                                                 path.add(new LatLng(coord1.lat, coord1.lng));
                                             }
 //                                            String s =step.distance.humanReadable;
-
                                         }
                                     }
 
@@ -260,28 +252,21 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
                                     }
                                 }
                             }
-
                         }
-
                     }
-
                 }
             }
-        } catch(Exception ex) {
-            Log.e("tag", ex.getLocalizedMessage());
-        }
 
         //Draw the polyline
         if (path.size() > 0) {
             PolylineOptions opts = new PolylineOptions().addAll(path).color(Color.BLUE).width(7);
             polyline =mMap.addPolyline(opts);
-
-
         }
-
         mMap.getUiSettings().setZoomControlsEnabled(true);
+} catch(Exception ex) {
+    Toast.makeText(passenger_locate_.this, ""+ex, Toast.LENGTH_SHORT).show();
+}
     }
-
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
@@ -289,7 +274,6 @@ public class passenger_locate_ extends FragmentActivity implements OnMapReadyCal
         {
             myMarker.setTitle("Bus Location");
             myMarker.setSnippet("Distance: "+dist_set.get(num)+", "+"Expected Time: "+time.get(num));
-
         }
         if (marker.equals(myMarker_user))
         {

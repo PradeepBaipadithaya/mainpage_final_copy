@@ -35,7 +35,7 @@ public class Trip_collector_work extends AppCompatActivity {
 
     FloatingActionButton mAddAlarmFab, mAddPersonFab,mupdate;
 
-
+    firebase fb =new firebase("tripcollectorsinfo");
     ExtendedFloatingActionButton mAddFab;
     DatabaseReference myRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://mainpage-1398d-default-rtdb.firebaseio.com/");
 
@@ -73,7 +73,7 @@ public class Trip_collector_work extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(Trip_collector_work.this, "PLEASE DONT TRY TO UPADTE BUS NUMBER AND PHONE NUMBER ...ERROR", Toast.LENGTH_SHORT).show();
+
                         if (!isAllFabsVisible) {
 
                             mAddAlarmFab.show();
@@ -124,8 +124,10 @@ public class Trip_collector_work extends AppCompatActivity {
                 Toast.makeText(Trip_collector_work.this, "Click on What You Want To Delete", Toast.LENGTH_SHORT).show();
             }
         });
-        recyclerView = findViewById(R.id.recyler3);
-        recyclerView.setLayoutManager( new LinearLayoutManager( this));
+
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyler3);
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         RecyclerContactAdapter_Trip_Collector_work  adapter = new RecyclerContactAdapter_Trip_Collector_work(this,arrcont);
         recyclerView.setAdapter(adapter);
         DatabaseReference myReff = FirebaseDatabase.getInstance().getReference().child("tripcollectorsinfo");
@@ -144,10 +146,7 @@ public class Trip_collector_work extends AppCompatActivity {
                             arrcont.add(new ContactModel(detail[0],detail[1],detail[2]));
                             i=0;
                         }
-//                        String name= data2.getChildren().getClass().getName().toString();
-//                        String email=data2.getValue().toString();
                     }
-
                 }
                 adapter.notifyItemInserted(arrcont.size()-1);
                 recyclerView.scrollToPosition(arrcont.size()-1);
@@ -159,6 +158,7 @@ public class Trip_collector_work extends AppCompatActivity {
 
             }
         });
+
         mAddPersonFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,41 +180,31 @@ public class Trip_collector_work extends AppCompatActivity {
                         String email1=email.getText().toString();
                         String pass1=pass.getText().toString();
                         String key = name1+"_"+pass1;
-                        reference_busnum = FirebaseDatabase.getInstance("https://mainpage-1398d-default-rtdb.firebaseio.com/").getReference("tripcollectorsinfo").child(key).child("busnum");
-                        reference_conducortname = FirebaseDatabase.getInstance("https://mainpage-1398d-default-rtdb.firebaseio.com/").getReference("tripcollectorsinfo").child(key).child("conductoremail");
-                        reference_conducortnum = FirebaseDatabase.getInstance("https://mainpage-1398d-default-rtdb.firebaseio.com/").getReference("tripcollectorsinfo").child(key).child("conductornum");
-//                        reference_conducortname = FirebaseDatabase.getInstance("https://mainpage-1398d-default-rtdb.firebaseio.com/").getReference("tripcollectorsinfo").child(key).child(""+userID).child("Long");
-//                        reference_conducortnum = FirebaseDatabase.getInstance("https://mainpage-1398d-default-rtdb.firebaseio.com/").getReference("tripcollectorsinfo").child(key).child(""+userID).child("Long");
+
                         if(name1.isEmpty() || email1.isEmpty() || pass1.isEmpty()){
                             Toast.makeText(Trip_collector_work.this, "Please Fill The Box To Add", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            myRef.child("tripcollectorsinfo").addListenerForSingleValueEvent(new ValueEventListener() {
+                            myRef.child(""+key).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    try {
-                                        if (snapshot.hasChild(email1)) {
-                                            Toast.makeText(Trip_collector_work.this, "Email has already registered", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            //Updating database
-try {
-    reference_busnum.setValue(name1);
-    reference_conducortname.setValue(email1);
-    reference_conducortnum.setValue(pass1);
-    finish();
-    Toast.makeText(Trip_collector_work.this, "Addded Sucessfully", Toast.LENGTH_SHORT).show();
-    dialog.cancel();
-}
-catch (Exception e){
-    Toast.makeText(Trip_collector_work.this, "Added Successfully", Toast.LENGTH_SHORT).show();
-    finish();
-}
-                                        }
+                                    if(snapshot.hasChild(name1)){
+                                        Toast.makeText(Trip_collector_work.this, "This number is already registered ", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        //Updating database
+                                        database_handler tcd = new database_handler(name1,email1,pass1);
+                                        fb.add(tcd,key).addOnSuccessListener(suc->
+                                        {
+                                            Toast.makeText(Trip_collector_work.this, "Record Inserted", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }).addOnFailureListener(er->{
+                                            Toast.makeText(Trip_collector_work.this, ""+er.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
 
-                                    } catch (Exception e) {
-                                        Toast.makeText(Trip_collector_work.this, "" + e, Toast.LENGTH_SHORT).show();
                                     }
                                 }
+
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     Toast.makeText(Trip_collector_work.this, "Email has already registered", Toast.LENGTH_SHORT).show();
@@ -227,7 +217,6 @@ catch (Exception e){
                         }
 
                     }
-
                 });
                 dialog.show();
 

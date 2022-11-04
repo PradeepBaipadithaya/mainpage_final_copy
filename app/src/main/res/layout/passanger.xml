@@ -45,8 +45,8 @@
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_baseline_phone"
             android:ems="10"
-            android:hint="    Bus Conductor Number"
-            android:inputType="number"
+            android:hint="    Bus  Number"
+
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/customtextcolor"
@@ -67,7 +67,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="AND"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="30dp"
 
         android:textStyle="normal|bold" />
@@ -89,7 +89,7 @@
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/ic_baseline_account_circle_24"
             android:ems="10"
-            android:hint="    Bus  Number"
+            android:hint="    Bus Conductor Number"
             android:inputType="number"
 
             android:padding="10dp"

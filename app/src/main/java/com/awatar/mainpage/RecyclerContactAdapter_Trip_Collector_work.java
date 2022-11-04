@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,13 +33,9 @@ import java.util.HashMap;
 
 public class RecyclerContactAdapter_Trip_Collector_work extends RecyclerView.Adapter<RecyclerContactAdapter_Trip_Collector_work.ViewHolder> {
     Context context;
-    Task<Void> databaseReference1;
-    Task<Void> databaseReference2;
-    Task<Void> databaseReference3;
-    DatabaseReference reference;
-    DatabaseReference reference_busnum;
-    DatabaseReference reference_conducortname;
-    DatabaseReference reference_conducortnum;
+
+    firebase fb =new firebase("tripcollectorsinfo");
+    DatabaseReference myRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://mainpage-1398d-default-rtdb.firebaseio.com/");
     ArrayList<ContactModel> arrcont;
     RecyclerContactAdapter_Trip_Collector_work(Context context, ArrayList<ContactModel> arrcont){
         this.arrcont=arrcont;
@@ -89,20 +87,40 @@ holder.name.setText(arrcont.get(position).name);
                         if(name1.isEmpty() || email1.isEmpty() || pass1.isEmpty()){
                             Toast.makeText(context, "Please Fill The Box To Add", Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            databaseReference1=FirebaseDatabase.getInstance().getReference().child("tripcollectorsinfo").child(key).child("busnum").setValue(name1);
+                        else {
+                            myRef.child("tripcollectorsinfo").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (!snapshot.hasChild(key)) {
+                                        Toast.makeText(context, "Bus number and phone number cannot be changed try deleting account ", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        database_handler tcd = new database_handler(name1, email1, pass1);
+                                        fb.add(tcd, "" + key)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Toast.makeText(context, "Record Updated", Toast.LENGTH_SHORT).show();
+                                                        ((Activity)context).finish();
+//                                                        dialog.cancel();
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+                                }
 
-                            databaseReference3=FirebaseDatabase.getInstance().getReference().child("tripcollectorsinfo").child(key).child("conductornum").setValue(pass1);
-                            databaseReference2=FirebaseDatabase.getInstance().getReference().child("tripcollectorsinfo").child(key).child("conductoremail").setValue(email1);
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(context, "Email has already registered", Toast.LENGTH_SHORT).show();
 
-                            arrcont.set(pos,new ContactModel(name1,email1,pass1));
+                                }
 
-                            notifyItemChanged(pos);
-                            Toast.makeText(context, "Updated Sucessfully", Toast.LENGTH_SHORT).show();
-                            dialog.cancel();
-
+                            });
                         }
-
                     }
                 });
                 dialog.show();
@@ -115,34 +133,23 @@ holder.name.setText(arrcont.get(position).name);
                 AlertDialog.Builder alertDialog= new AlertDialog.Builder(context).setTitle("Delete Tripcollector").setMessage("Are You Sue  you want to delete").setIcon(R.drawable.ic_person_remove).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String nameing__=arrcont.get(pos).paswd;
+                        String name = (arrcont.get(pos)).name;
+                        String pass = (arrcont.get(pos)).paswd;
+                        String key = name+"_"+pass;
+                        fb.remove( "" + key)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(context, "Record deleted", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
 
-                        String nameing_=arrcont.get(pos).name;
-//                        String nameing=arrcont.get(pos).email;
-                        String nameing = nameing_+"_"+nameing__;
-
-                        DatabaseReference myReff = FirebaseDatabase.getInstance().getReference().child("tripcollectorsinfo");
-                        Query email=myReff.child(nameing);
-                        myReff.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot data:snapshot.getChildren()) {
-                                    email.getRef().removeValue();
-                                }
-                                try {
-                                    ((Activity)context).finish();
-                                    Toast.makeText(context, "Deleted From Tripcollectors : "+nameing, Toast.LENGTH_SHORT).show();
-
-                                } catch (Throwable e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Log.e("TAG","On cancelled",error.toException());
-                            }
-
-                        });
                         arrcont.remove(pos);
                         notifyItemRemoved(pos);
                     }

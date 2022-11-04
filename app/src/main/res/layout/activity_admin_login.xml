@@ -31,7 +31,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="296dp">
+        android:layout_marginTop="296dp"
+        android:textColor="@color/customtextcolor"
+        android:textColorHint="@color/custom_color_yellow">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/lemail"
@@ -41,7 +43,7 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/mybutton1"
             android:drawableStart="@drawable/ic_mail"
-            android:hint="Enter Email Id"
+            android:hint="  Enter Email Id"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/customtextcolor"
@@ -59,6 +61,8 @@
     android:layout_alignParentTop="true"
     android:layout_marginStart="8dp"
     android:layout_marginTop="420dp"
+    android:textColor="@color/customtextcolor"
+    android:textColorHint="@color/custom_color_yellow"
     >
 
     <com.google.android.material.textfield.TextInputEditText

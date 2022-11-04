@@ -210,9 +210,10 @@ public class conductor_location extends AppCompatActivity {
                 mLocationService = new LocationService();
                 mServiceIntent = new Intent(this, mLocationService.getClass());
                 if (!Util.isMyServiceRunning(mLocationService.getClass(), this)) {
-                    Intent intent = getIntent();
-                    String id = intent.getStringExtra("conductor_email");
+//                    Intent intent = getIntent();
+                    String id = getIntent().getStringExtra("conductor_email");
                     mServiceIntent.putExtra("conductor_email", id);
+                    Toast.makeText(conductor_location.this, ""+id, Toast.LENGTH_SHORT).show();
                     mServiceIntent.putExtra("role", "Conductor");
                     startService(mServiceIntent);
                     Toast.makeText(this, getString(R.string.service_start_successfully), Toast.LENGTH_SHORT).show();

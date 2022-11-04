@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.awatar.mainpage">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -17,7 +17,7 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/awatar"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mainpage"
         tools:targetApi="31">
@@ -38,9 +38,13 @@
             android:value="AIzaSyAGNT9WwAdNDz1o8P3Xrb0arxptCDVp1gM" />
 
         <activity
-            android:name=".passenger_locate_"
+            android:name=".passenger_locate"
             android:exported="false"
             android:label="@string/title_activity_passenger_locate" />
+        <activity
+            android:name=".passenger_locate_"
+            android:exported="false"
+             />
 
         <service
             android:name=".LocationService"
@@ -52,6 +56,10 @@
             android:exported="false" />
         <activity
             android:name=".AdminControl1"
+            android:exported="false" />
+
+        <activity
+            android:name=".admin_update_delete_page"
             android:exported="false" />
         <activity
             android:name=".Update_Seclector_Admin"
@@ -80,7 +88,6 @@
         <activity
             android:name=".passenger_start"
             android:exported="false" />
-
         <activity
             android:name=".SplashActivity"
             android:exported="true">

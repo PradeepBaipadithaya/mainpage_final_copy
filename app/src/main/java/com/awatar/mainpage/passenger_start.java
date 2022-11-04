@@ -138,60 +138,60 @@ public class passenger_start extends AppCompatActivity {
 
     }
 
-        private void starServiceFunc(){
-            mLocationService = new LocationService();
-            mServiceIntent = new Intent(this, mLocationService.getClass());
-            if (!Util.isMyServiceRunning(mLocationService.getClass(), this)) {
-                Intent intent = getIntent();
+    private void starServiceFunc(){
+        mLocationService = new LocationService();
+        mServiceIntent = new Intent(this, mLocationService.getClass());
+        if (!Util.isMyServiceRunning(mLocationService.getClass(), this)) {
+            Intent intent = getIntent();
 //                String id = intent.getStringExtra("conductor_email");
-                String id = "testing";
-                mServiceIntent.putExtra("conductor_email",id);
-                mServiceIntent.putExtra("role","Passenger");
-                startService(mServiceIntent);
-                Toast.makeText(this, getString(R.string.service_start_successfully), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, getString(R.string.service_already_running), Toast.LENGTH_SHORT).show();
-            }
+            String id = "testing";
+            mServiceIntent.putExtra("conductor_email",id);
+            mServiceIntent.putExtra("role","Passenger");
+            startService(mServiceIntent);
+            Toast.makeText(this, getString(R.string.service_start_successfully), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.service_already_running), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void stopServiceFunc(){
+        mLocationService = new LocationService();
+        mServiceIntent = new Intent(this, mLocationService.getClass());
+        if (Util.isMyServiceRunning(mLocationService.getClass(), this)) {
+            stopService(mServiceIntent);
+            Toast.makeText(this, "Service stopped!!", Toast.LENGTH_SHORT).show();
+            //saveLocation(); // explore it by your self
+        } else {
+            Toast.makeText(this, "Service is already stopped!!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void requestBackgroundLocationPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
+                MY_BACKGROUND_LOCATION_REQUEST);
+    }
+
+    private void requestFineLocationPermission() {
+        ActivityCompat.requestPermissions(this,  new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, MY_FINE_LOCATION_REQUEST);
+    }
+
+    public void saveLocation(){
+        File dir = new File(this.getFilesDir(), "trickyworld");
+        if(!dir.exists()){
+            dir.mkdir();
         }
 
-        private void stopServiceFunc(){
-            mLocationService = new LocationService();
-            mServiceIntent = new Intent(this, mLocationService.getClass());
-            if (Util.isMyServiceRunning(mLocationService.getClass(), this)) {
-                stopService(mServiceIntent);
-                Toast.makeText(this, "Service stopped!!", Toast.LENGTH_SHORT).show();
-                //saveLocation(); // explore it by your self
-            } else {
-                Toast.makeText(this, "Service is already stopped!!", Toast.LENGTH_SHORT).show();
-            }
+        try {
+            File userLocation = new File(dir, "user_location.txt");
+            FileWriter writer = new FileWriter(userLocation);
+            writer.append(LocationService.locationArrayList.toString());
+            writer.flush();
+            writer.close();
+            LocationService.locationArrayList.clear();
+        } catch (Exception e){
+            e.printStackTrace();
         }
-
-        private void requestBackgroundLocationPermission() {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                    MY_BACKGROUND_LOCATION_REQUEST);
-        }
-
-        private void requestFineLocationPermission() {
-            ActivityCompat.requestPermissions(this,  new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, MY_FINE_LOCATION_REQUEST);
-        }
-
-        public void saveLocation(){
-            File dir = new File(this.getFilesDir(), "trickyworld");
-            if(!dir.exists()){
-                dir.mkdir();
-            }
-
-            try {
-                File userLocation = new File(dir, "user_location.txt");
-                FileWriter writer = new FileWriter(userLocation);
-                writer.append(LocationService.locationArrayList.toString());
-                writer.flush();
-                writer.close();
-                LocationService.locationArrayList.clear();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+    }
 
 }

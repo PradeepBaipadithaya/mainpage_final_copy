@@ -16,7 +16,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="160dp">
+        android:layout_marginTop="160dp"
+        android:textColor="@color/customtextcolor"
+        android:textColorHint="@color/custom_color_yellow">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/admine"
@@ -26,7 +28,7 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/mybutton1"
             android:drawableStart="@drawable/ic_mail"
-            android:hint="Enter Email Id"
+            android:hint="  Enter Email Id"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/customtextcolor"
@@ -45,6 +47,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="260dp"
+        android:textColor="@color/customtextcolor"
+        android:textColorHint="@color/custom_color_yellow"
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -53,7 +57,7 @@
             android:layout_height="60dp"
             android:background="@drawable/mybutton1"
             android:drawableStart="@drawable/ic_lock"
-            android:hint="Password"
+            android:hint="  Password"
             android:inputType="textPassword"
             android:padding="10dp"
 

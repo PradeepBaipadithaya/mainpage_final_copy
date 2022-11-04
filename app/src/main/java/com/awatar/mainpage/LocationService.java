@@ -102,7 +102,6 @@ public class LocationService extends Service {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
-
                 Location location =  locationResult.getLastLocation();
 //                Toast.makeText(getApplicationContext(),
 //                        "Lat: "+Double.toString(location.getLatitude()) + '\n' +

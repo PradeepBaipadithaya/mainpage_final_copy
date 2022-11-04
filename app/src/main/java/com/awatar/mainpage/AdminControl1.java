@@ -35,6 +35,7 @@ public class AdminControl1 extends AppCompatActivity {
 
     ExtendedFloatingActionButton mAddFab;
 
+    firebase fb =new firebase("ticketcollectors");
 
     TextView addAlarmActionText, addPersonActionText,updatetext;
 
@@ -128,8 +129,8 @@ public class AdminControl1 extends AppCompatActivity {
 
         //Recylcer View ------------------------------------------------------------------------------------->
 
-        recyclerView = findViewById(R.id.recyler2);
-        recyclerView.setLayoutManager( new LinearLayoutManager( this));
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyler2);
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         RecyclerContactAdapter_Trip_Collector adapter = new RecyclerContactAdapter_Trip_Collector(this,arrcont);
         recyclerView.setAdapter(adapter);
 
@@ -199,21 +200,14 @@ public class AdminControl1 extends AppCompatActivity {
                                     }
                                     else{
                                         //Updating database
-                                        try{
-                                            myRef.child("ticketcollectors").child(name1).child("phno").setValue(name1);
-                                            myRef.child("ticketcollectors").child(name1).child("name").setValue(email1);
-                                            myRef.child("ticketcollectors").child(name1).child("password").setValue(pass1);
+                                        database_handler tcd = new database_handler(email1,name1,pass1);
+                                        fb.add(tcd,pass1).addOnSuccessListener(suc->
+                                        {
+                                            Toast.makeText(AdminControl1.this, "Record Inserted", Toast.LENGTH_SHORT).show();
                                             finish();
-                                            ArrayList<ContactModel> arrcont= new ArrayList<>();
-                                            //arrcont.add(new ContactModel(name1,email1,pass1));
-                                            Toast.makeText(AdminControl1.this, "Addded Sucessfully", Toast.LENGTH_SHORT).show();
-                                            dialog.cancel();
-                                        }
-                                        catch (Exception e){
-                                            Toast.makeText(AdminControl1.this, "ERROR WATCHOUT!!!", Toast.LENGTH_SHORT).show();
-                                            finish();
-                                        }
-
+                                        }).addOnFailureListener(er->{
+                                            Toast.makeText(AdminControl1.this, ""+er.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
 
                                     }
                                 }

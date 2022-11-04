@@ -40,15 +40,15 @@ public class passenger_page extends AppCompatActivity {
                     String conductor_bus_num = e1.getText().toString();
                     String conductor_num = e2.getText().toString();
                     String key = conductor_bus_num+"_"+conductor_num;
-                    if(conductor_num.equals("") && conductor_bus_num.equals("")){
-                        Toast.makeText(passenger_page.this, "Any one of the field is mandatory", Toast.LENGTH_SHORT).show();
+                    if(conductor_num.equals("") || conductor_bus_num.equals("")){
+                        Toast.makeText(passenger_page.this, "Both field are mandatory", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         myRef.child("tripcollectorsinfo").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.hasChild(key)) {
-                                    DataSnapshot value = snapshot.child(key).child("conductoremail");
+                                    DataSnapshot value = snapshot.child(key).child("phno");
                                     String abc = value.getValue().toString();
                                     Intent intent = new Intent(passenger_page.this, passenger_start.class);
                                     intent.putExtra("conductor_bus_num", abc);
